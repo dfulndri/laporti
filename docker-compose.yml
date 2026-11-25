@@ -1,0 +1,38 @@
+services:
+  app:
+    build: .
+    container_name: laporti_app
+    ports:
+      - "${APP_PORT:-8080}:80"
+    entrypoint: ["sh", "/var/www/html/docker/entrypoint.sh"]
+    command: ["apache2-foreground"]
+    environment:
+      DB_HOST: db
+      DB_NAME: "${DB_NAME:?isi DB_NAME di file .env}"
+      DB_USER: "${DB_USER:?isi DB_USER di file .env}"
+      DB_PASS: "${DB_PASSWORD:?isi DB_PASSWORD di file .env}"
+      DB_PREFIX: "${DB_PREFIX:-b2ca_}"
+      SITE_URL: "${SITE_URL:-http://localhost:8080}"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.11
+    container_name: laporti_db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:?isi DB_ROOT_PASSWORD di file .env}"
+      MARIADB_DATABASE: "${DB_NAME}"
+      MARIADB_USER: "${DB_USER}"
+      MARIADB_PASSWORD: "${DB_PASSWORD}"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "${DB_BIND:-127.0.0.1}:${DB_PORT:-3307}:3306"
+    volumes:
+      - laporti_db_data:/var/lib/mysql
+      - ./docker/initdb:/docker-entrypoint-initdb.d
+
+volumes:
+  laporti_db_data:
