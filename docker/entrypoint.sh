@@ -1,10 +1,11 @@
 #!/bin/sh
 set -e
-cd /var/www/html
+APP_ROOT="${APP_ROOT:-/var/www/html}"
+cd "$APP_ROOT"
 
 if [ ! -f hesk_settings.inc.php ]; then
   if [ -f hesk_settings.inc.php.example ]; then
-    php docker/render-settings.php
+    php /opt/laporti/render-settings.php
   else
     echo "[laporti] PERINGATAN: hesk_settings.inc.php dan .example sama-sama tidak ada"
   fi

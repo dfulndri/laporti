@@ -1,17 +1,17 @@
 # kredensial & environment
 .env
-hesk_settings.inc.php
-hesk_settings.inc.php.produksi
+src/hesk_settings.inc.php
+src/hesk_settings.inc.php.produksi
 
 # dump database
 *.sql
 
 # data runtime HESK (lampiran warga, cache)
-attachments/*
-!attachments/.htaccess
-!attachments/index.htm
-!attachments/temp/
-attachments/temp/*
-!attachments/temp/index.htm
-cache/*
-!cache/index.htm
+src/attachments/*
+!src/attachments/.htaccess
+!src/attachments/index.htm
+!src/attachments/temp/
+src/attachments/temp/*
+!src/attachments/temp/index.htm
+src/cache/*
+!src/cache/index.htm

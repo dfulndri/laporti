@@ -1,11 +1,11 @@
 <?php
 // Membuat hesk_settings.inc.php dari hesk_settings.inc.php.example + environment variable.
-$root = dirname(__DIR__);
+$root = getenv('APP_ROOT') ?: '/var/www/html';
 $src  = $root . '/hesk_settings.inc.php.example';
 $dst  = $root . '/hesk_settings.inc.php';
 
 if (!is_file($src)) {
-    fwrite(STDERR, "[laporti] hesk_settings.inc.php.example tidak ditemukan\n");
+    fwrite(STDERR, "[laporti] hesk_settings.inc.php.example tidak ditemukan di $root\n");
     exit(1);
 }
 
@@ -24,7 +24,6 @@ $map = [
     '__URL_KEY__'   => substr(bin2hex(random_bytes(16)), 0, 30),
 ];
 
-// escape agar aman di dalam string PHP bertanda kutip tunggal
 foreach ($map as $k => $v) {
     $map[$k] = addcslashes($v, "'\\");
 }
